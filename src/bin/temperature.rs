@@ -76,5 +76,5 @@ fn main() {
     println!("Lowest 5 Temperatures: {:?}", &readings[..5]);
     println!("Highest 5 Temperatures: {:?}", &readings[readings.len()-5..readings.len()]);
     println!();
-    println!("10-Minute interval from {}-{} had the largest temperature difference of {} degrees F", largest_10_min_diff.0, largest_10_min_diff.0 + 10, largest_10_min_diff.1);
+    println!("10-Minute interval from {}-{} had the largest temperature difference of {} degrees F.", largest_10_min_diff.0, largest_10_min_diff.0 + 10, largest_10_min_diff.1);
 }
