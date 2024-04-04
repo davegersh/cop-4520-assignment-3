@@ -7,7 +7,7 @@ All below explanations require understanding of the assignment first.
 To run any of the two problems, clone this repo to a desired location and make sure to have rust and cargo installed, if not, install them using [rustup](https://rustup.rs).
 
 ## Problem 1: The Birthday Presents Party
-This is referring to code in`src/bin/presents.rs`.
+This is referring to code in `src/bin/presents.rs`.
 
 ### Design Breakdown
 
@@ -20,7 +20,7 @@ cargo run --bin presents
 ```
 
 ## Problem 2: Atmospheric Temperature Reading Module
-This is referring to code in`src/bin/temperature.rs`.
+This is referring to code in `src/bin/temperature.rs`.
 
 ### Design Breakdown
 Solving this problem is quite simple if we consider it as a Multi-Producer, Single-Consumer (MPSC) problem.
@@ -36,7 +36,6 @@ Each transmitter copy has a `send` function to send in the temperature readings 
 Each reading is sent in at a certain interval about 60 times to represent the 60 minutes in an hour before a report is complete.
 
 Note that the receiver part of the channel is being used only on the main thread and it represents the single-consumer.
-
 As the data is sent with the transmitter, the receiver takes in the sent temperature readings and collect them all into an array.
 The array is then sorted from smallest to largest and the top 5 highest and lowest temperatures are printed to the console.
 
@@ -54,7 +53,10 @@ Highest 5 Temperatures: [68.74765, 69.111435, 69.27263, 69.80205, 69.950516]
 10-Minute interval from 25-35 had the largest temperature difference of 40.20719 degrees F.
 ```
 ### Evaluation
-In terms of evaluation of this code, since the concurrency primtiive is a simply queue in the form of a MPSC problem, the solution is lock-free and effectively wait-free. As the progress is made on each thread, the results are simply sent to a receiver and processed after all threads complete the "hour" of gathering temperature data. For runtime, this is not very relevant to the problem as it entirely depends on how long the threads are slept for between each reading. For my code I've set it to wait 1ms between readings to represent one minute.
+In terms of evaluation of this code, since the concurrency primtiive is a simply queue in the form of a MPSC problem, the solution is lock-free and effectively wait-free. As the progress is made on each thread, the results are simply sent to a receiver and processed after all threads complete the "hour" of gathering temperature data. There is no way for any deadlocks or data races to occur, all threads are guaranteed to progress as no threads wait for any other thread. 
+
+For runtime, this is not very relevant to the problem as it entirely depends on how long the threads are slept for between each reading. 
+For my code I've set it to wait 1ms between readings to represent one minute.
 
 
 ### Running
