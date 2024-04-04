@@ -1,24 +1,28 @@
 ## COP 4520 - Assignment #3
-A minotaur has half a million birthday presents and a mars rover has a thermometer.
+A minotaur has half a million birthday presents and a mars rover has a few thermometers.
 
 Note that this repo is based on the assignment outlined in the `assignment.pdf` file.
 All below explanations require understanding of the assignment first.
 
-To install, simply clone this repo to a desired location.
-To run any part, make sure to have rust and cargo installed, if not, install them using [rustup](https://rustup.rs).
+To run any of the two problems, clone this repo to a desired location and make sure to have rust and cargo installed, if not, install them using [rustup](https://rustup.rs).
 
 ## Problem 1: The Birthday Presents Party
-...
+This is referring to code in`src/bin/presents.rs`.
+
+### Design Breakdown
+
+### Evaluation
 
 ### Running
-Type in the following command to run the code for part 1:
+Type in the following command to run the code for problem 1:
 ```
 cargo run --bin presents
 ```
 
 ## Problem 2: Atmospheric Temperature Reading Module
-Note: All code for this problem is stored in the `src/bin/temperature.rs` file.
+This is referring to code in`src/bin/temperature.rs`.
 
+### Design Breakdown
 Solving this problem is quite simple if we consider it as a Multi-Producer, Single-Consumer (MPSC) problem.
 
 Where we have multiple producers in the form of the temperature sensors on the rover and a single-consumer represented by the shared-resource that we can consider the CPU on the rover itself.
@@ -49,9 +53,12 @@ Highest 5 Temperatures: [68.74765, 69.111435, 69.27263, 69.80205, 69.950516]
 
 10-Minute interval from 25-35 had the largest temperature difference of 40.20719 degrees F.
 ```
+### Evaluation
+In terms of evaluation of this code, since the concurrency primtiive is a simply queue in the form of a MPSC problem, the solution is lock-free and effectively wait-free. As the progress is made on each thread, the results are simply sent to a receiver and processed after all threads complete the "hour" of gathering temperature data. For runtime, this is not very relevant to the problem as it entirely depends on how long the threads are slept for between each reading. For my code I've set it to wait 1ms between readings to represent one minute.
+
 
 ### Running
-Type in the following command to run the code for part 1:
+Type in the following command to run the code for problem 2:
 ```
 cargo run --bin temperature
 ```
