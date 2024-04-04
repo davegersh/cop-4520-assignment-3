@@ -1,5 +1,6 @@
 use rand::thread_rng;
 use rand::seq::SliceRandom;
+use std::sync::{RwLock, Arc};
 
 
 fn main() {
@@ -36,7 +37,7 @@ Doing this involves the servant unlinking the presnt from the chain and linking 
 
 struct Present {
     tag_number: u32,
-    next: Option<Box<Present>>
+    next: Option<Arc<RwLock<Present>>>
 }
 
 impl Present {
@@ -48,7 +49,7 @@ impl Present {
     }
 
     fn set_next(&mut self, present: Present) {
-        self.next = Some(Box::new(present));
+        self.next = Some(Arc::new(RwLock::new(present)));
     }
 }
 
