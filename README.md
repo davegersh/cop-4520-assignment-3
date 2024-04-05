@@ -10,6 +10,13 @@ To run any of the two problems, clone this repo to a desired location and make s
 This is referring to code in `src/bin/presents.rs`.
 
 ### Design Breakdown
+Implementing a linked list in Rust, let alone a concurrent one is notoriously difficult and as a relatively new user of Rust, this has been a nightmare. As a result, I've decided to move away from the linked list itself and just stick to Rust's vectors and pass those around concurrently. The explanation for this is described in a wonderful story paragraph below:
+
+The servants, in there best efforts to solve this problem decided to talk to the Minotaur about problems with their implementation, as a result, the servants the minotaur came to a compromise: don't use a linked list! As a result, the presents where simply placed in order on the ground instead of linked in a chain. This way, the minotaur could also save money by not needing to purchase several hundreds of thousands of chains. After deciding not to use a linked list, the minotaur realized how archaic and problematic the usage of chains might be (especially for a memory safe language!!!!).
+
+
+
+
 
 ### Evaluation
 
