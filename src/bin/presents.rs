@@ -1,7 +1,5 @@
 use rand::{thread_rng, Rng};
 use rand::seq::SliceRandom;
-use std::borrow::BorrowMut;
-use std::sync::atomic::{AtomicU32, Ordering};
 use std::{sync::{Arc, RwLock}, thread::{self, JoinHandle}, time::Duration};
 
 type ArcLock<T> = Arc<RwLock<T>>;
@@ -27,7 +25,7 @@ fn main() {
     println!("Hello, presents!!");
 
     // Initialize a vector of tag numbers to represent the unordered bag of random presents
-    let mut unordered_bag: Vec<u32> = (1..=NUM_PRESENTS).collect();
+    let mut unordered_bag: Vec<Present> = (1..=NUM_PRESENTS).collect();
     unordered_bag.shuffle(&mut thread_rng());
 
     // Initialize unordered bag and present chain as atomically reference-counted Reader-Writer Locks
@@ -114,64 +112,17 @@ Doing this involves the servant unlinking the presnt from the chain and linking 
 
 */
 
-#[derive(Default)]
-struct PresentChain {
-    size: u32,
-    head: Option<Present>
-}
-
-impl PresentChain {
-    fn insert(&mut self, mut present: Present) {
-        if let Some(head_present) = &self.head {
-            if head_present.tag_number > present.tag_number {
-                
-                self.head = Some(present);
-            }
-        }
-        else {
-            self.head = Some(present);
-        }
-        self.size += 1;
-    }
-
-    // removes a random present from the chain
-    fn remove_random(&mut self) {
-        self.size -= 1;
-    }
-
-    fn search(&self, tag_number: u32) -> bool {
-        let mut cur_present = &self.head;
-        while let Some(present) = cur_present {
-            if present.tag_number == tag_number {
-                return true;
-            }
-            else {
-                //cur_present = &present.next;
-            }
-        }
-        false
-    }
-}
-
 struct Present {
     tag_number: u32,
-    next: Option<Box<Present>>
+    card_written: bool
 }
 
 impl Present {
     fn new(tag_number: u32) -> Self {
         Self { 
             tag_number, 
-            next: None,
+            card_written: false,
         }
-    }
-
-    fn set_next(&mut self, present: Present) {
-        self.next = Some(Box::new(present));
-    }
-
-    fn insert() {
-
     }
 }
 
