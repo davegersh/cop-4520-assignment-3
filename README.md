@@ -14,13 +14,22 @@ Implementing a linked list in Rust, let alone a concurrent one is notoriously di
 
 The servants, in there best efforts to solve this problem decided to talk to the Minotaur about problems with their implementation, as a result, the servants the minotaur came to a compromise: don't use a linked list! As a result, the presents where simply placed in order on the ground instead of linked in a chain. This way, the minotaur could also save money by not needing to purchase several hundreds of thousands of chains. After deciding not to use a linked list, the minotaur realized how archaic and problematic the usage of chains might be (especially for a memory safe language!).
 
+So following that change, the servants had a much easier time working with the presents and they did so in a simple and clean way. Each servant was assigned some subset of the tag numbers that they would work with. When they grabbed a present from the bag, they check to see if it is assigned to them, if so, they make a "thank you" card and send it. The present is then added to a list containing all presents that have been thanked. Notice how the extra-step of a chain is completely removed and makes things significantly more efficient! The minotaur is happy!
 
-
-
-
-
+This is all implemented by having a lock on the unordered bag and have each servant manage their list of thanked presents. Whenever a present is removed from the bag, it is locked beforehand, then unlocked once a present is removed.This ensures that any contension is handled approprately with the unordered bag. Also with the ability for each servant to handle their set of thanked presents, we can completely avoid contention there. For searching, the servants are occassional interrupted (about 5% of the time) with a request to search for a compelted present within their list. After all presents are thanked, each servant, sends the completed list to a Multi-Producer Single-Consumer transmitter. This is explained better in problem 2 of the assignment, where this is heavily used.
 
 ### Evaluation
+Again, in this case it doesn't make much sense to do a proper evaluation as it can be a bit random with the searching happening 50% of the time. The entire algorithm though can run in a O(n / s) time where n represents the total number of presents and s represnts the number of servants. The number of servants massively improves performance as each servant handles their own set of presents.
+
+Below is an example of the output (last 5 lines shown for brevity):
+```
+...
+Minotaur found thank you card for tag number 480405
+Minotaur found thank you card for tag number 283370
+Minotaur found thank you card for tag number 162739
+Servants Complete!
+Total Presents / Cards Written: 500000 / 500000
+```
 
 ### Running
 Type in the following command to run the code for problem 1:

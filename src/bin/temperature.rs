@@ -52,8 +52,6 @@ fn main() {
     // sets up a multi-producers, single-consumer channel for passing data from all threads (sensors)
     let (tx, rx) = mpsc::channel();
 
-
-
     // runs sensors - 1 specifically for cloning the transmitter
     for _ in 0..(NUM_SENSORS - 1) {
         run_sensor(tx.clone());
